@@ -1,0 +1,7 @@
+{
+  "name": "NurseShift",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
