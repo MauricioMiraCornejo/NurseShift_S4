@@ -1,0 +1,91 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Registro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Crear Cuenta</ion-card-title>
+      <ion-card-subtitle>Completa tus datos</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      
+      <ion-item>
+        <ion-label position="floating">Nombre completo</ion-label>
+        <ion-input 
+          type="text" 
+          [(ngModel)]="nombre" 
+          (ionInput)="validarNombre()">
+        </ion-input>
+      </ion-item>
+      <ion-label *ngIf="errorNombre" color="danger" class="error-message">
+        {{ errorNombre }}
+      </ion-label>
+
+      
+      <ion-item>
+        <ion-label position="floating">Correo electrónico</ion-label>
+        <ion-input 
+          type="email" 
+          [(ngModel)]="email" 
+          (ionInput)="validarEmail()">
+        </ion-input>
+      </ion-item>
+      <ion-label *ngIf="errorEmail" color="danger" class="error-message">
+        {{ errorEmail }}
+      </ion-label>
+
+      
+      <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input 
+          type="password" 
+          [(ngModel)]="password" 
+          (ionInput)="validarPassword()">
+        </ion-input>
+      </ion-item>
+      <ion-label *ngIf="errorPassword" color="danger" class="error-message">
+        {{ errorPassword }}
+      </ion-label>
+
+      
+      <ion-item>
+        <ion-label position="floating">Confirmar contraseña</ion-label>
+        <ion-input 
+          type="password" 
+          [(ngModel)]="confirmPassword" 
+          (ionInput)="validarConfirmPassword()">
+        </ion-input>
+      </ion-item>
+      <ion-label *ngIf="errorConfirmPassword" color="danger" class="error-message">
+        {{ errorConfirmPassword }}
+      </ion-label>
+
+      
+      <ion-item>
+        <ion-label>Rol</ion-label>
+        <ion-select [(ngModel)]="rol">
+          <ion-select-option value="enfermera">Enfermera</ion-select-option>
+          <ion-select-option value="supervisora">Supervisora</ion-select-option>
+          <ion-select-option value="jefa">Jefa de turno</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      
+      <ion-label *ngIf="errorGeneral" color="danger" class="error-message general-error">
+        {{ errorGeneral }}
+      </ion-label>
+
+      
+      <ion-button expand="block" (click)="registrar()" routerLink="/login" class="register-btn">
+        Registrarse
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

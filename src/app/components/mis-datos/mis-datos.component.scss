@@ -1,0 +1,91 @@
+.welcome-text {
+  color: var(--ion-color-medium);
+  margin-bottom: 20px;
+}
+
+.turno-card {
+  margin-bottom: 20px;
+  border-radius: 12px;
+}
+
+.estado-chip {
+  margin-top: 10px;
+}
+
+.action-card {
+  text-align: center;
+  cursor: pointer;
+}
+
+.action-icon {
+  font-size: 40px;
+  color: var(--ion-color-primary);
+  margin-bottom: 10px;
+}
+
+.action-card h3 {
+  margin: 5px 0;
+  font-size: 16px;
+}
+
+.action-card p {
+  font-size: 12px;
+  color: var(--ion-color-medium);
+}
+
+
+
+
+/* NURSESHIFT/src/app/components/mis-datos/mis-datos.component.scss (MODIFICADO) */
+.mis-datos-container {
+  padding: 0;
+  width: 100%;
+}
+
+.welcome-text {
+  color: var(--ion-color-medium);
+  margin-bottom: 20px;
+}
+
+.turno-card {
+  margin-bottom: 20px;
+  border-radius: 12px;
+}
+
+.estado-chip {
+  margin-top: 10px;
+}
+
+.action-card {
+  text-align: center;
+  cursor: pointer;
+  height: 100%;
+}
+
+.action-icon {
+  font-size: 40px;
+  color: var(--ion-color-primary);
+  margin-bottom: 10px;
+}
+
+.action-card h3 {
+  margin: 5px 0;
+  font-size: 16px;
+}
+
+.action-card p {
+  font-size: 12px;
+  color: var(--ion-color-medium);
+}
+
+ion-grid {
+  margin-top: 10px;
+}
+
+ion-col {
+  padding: 5px;
+}
+
+ion-list {
+  margin-top: 10px;
+}

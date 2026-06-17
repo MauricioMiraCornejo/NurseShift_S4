@@ -1,0 +1,70 @@
+<div class="experiencia-container">
+  <ion-button expand="block" (click)="toggleFormulario()" color="primary" class="add-btn">
+    <ion-icon name="add" slot="start"></ion-icon>
+    {{ mostrarFormulario ? 'Cancelar' : 'Agregar Experiencia' }}
+  </ion-button>
+
+  <!-- Formulario para agregar experiencia -->
+  <ion-card *ngIf="mostrarFormulario" class="form-card">
+    <ion-card-header>
+      <ion-card-title>Nueva Experiencia Laboral</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Empresa</ion-label>
+        <ion-input [(ngModel)]="nuevaExperiencia.empresa" type="text"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Cargo</ion-label>
+        <ion-input [(ngModel)]="nuevaExperiencia.cargo" type="text"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Año Inicio</ion-label>
+        <ion-select [(ngModel)]="nuevaExperiencia.anoInicio">
+          <ion-select-option *ngFor="let anio of anios" [value]="anio">{{ anio }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Trabajando actualmente</ion-label>
+        <ion-toggle [(ngModel)]="nuevaExperiencia.trabajandoActual"></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="!nuevaExperiencia.trabajandoActual">
+        <ion-label position="floating">Año Término</ion-label>
+        <ion-select [(ngModel)]="nuevaExperiencia.anoTermino">
+          <ion-select-option *ngFor="let anio of anios" [value]="anio">{{ anio }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-button expand="block" (click)="agregarExperiencia()" class="save-btn">Guardar Experiencia</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Listado de experiencias -->
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Mis Experiencias Laborales</ion-label>
+    </ion-list-header>
+
+    <ion-item *ngFor="let exp of experiencias; let i = index" class="experiencia-item">
+      <ion-label>
+        <h3><strong>{{ exp.empresa }}</strong></h3>
+        <p>Cargo: {{ exp.cargo }}</p>
+        <p>Periodo: {{ exp.anoInicio }} - {{ exp.trabajandoActual ? 'Actualidad' : exp.anoTermino }}</p>
+      </ion-label>
+      <ion-button slot="end" fill="clear" color="danger" (click)="eliminarExperiencia(i)">
+        <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+    <ion-item *ngIf="experiencias.length === 0" class="empty-state">
+      <ion-label class="ion-text-center">
+        <p>No hay experiencias laborales registradas</p>
+        <p>Presiona el botón "Agregar Experiencia" para comenzar</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</div>

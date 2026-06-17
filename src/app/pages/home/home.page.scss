@@ -1,0 +1,64 @@
+.welcome-text {
+  color: var(--ion-color-medium);
+  margin-bottom: 20px;
+}
+
+.turno-card {
+  margin-bottom: 20px;
+  border-radius: 12px;
+}
+
+.estado-chip {
+  margin-top: 10px;
+}
+
+.action-card {
+  text-align: center;
+  cursor: pointer;
+}
+
+.action-icon {
+  font-size: 40px;
+  color: var(--ion-color-primary);
+  margin-bottom: 10px;
+}
+
+.action-card h3 {
+  margin: 5px 0;
+  font-size: 16px;
+}
+
+.action-card p {
+  font-size: 12px;
+  color: var(--ion-color-medium);
+}
+
+
+ion-segment {
+  margin-bottom: 20px;
+  --background: var(--ion-color-light);
+  border-radius: 8px;
+}
+
+ion-segment-button {
+  --indicator-color: var(--ion-color-primary);
+}
+
+
+.component-wrapper {
+  width: 100%;
+  min-height: 300px;
+}
+
+
+.component-wrapper > * {
+  width: 100%;
+  display: block;
+}
+
+
+:host ::ng-deep .experiencia-container,
+:host ::ng-deep .certificaciones-container,
+:host ::ng-deep .mis-datos-container {
+  padding: 0;
+}

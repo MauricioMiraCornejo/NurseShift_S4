@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mis Turnos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  
+  <ion-list [@fadeInList]>
+    <ion-item *ngFor="let turno of turnos" class="turno-item">
+      <ion-avatar slot="start">
+        <ion-icon name="calendar-number-outline" class="avatar-icon"></ion-icon>
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ turno.fecha }}</h2>
+        <p>
+          <ion-icon name="time-outline"></ion-icon> {{ turno.hora }}
+        </p>
+        <p>
+          <ion-icon name="business-outline"></ion-icon> Turno {{ turno.tipo }}
+        </p>
+      </ion-label>
+      
+      <ion-chip [color]="turno.color" slot="end">
+        <ion-label>{{ turno.estado }}</ion-label>
+      </ion-chip>
+    </ion-item>
+  </ion-list>
+
+  
+  <div *ngIf="turnos.length === 0" class="empty-state">
+    <ion-icon name="calendar-outline" class="empty-icon"></ion-icon>
+    <p>No hay turnos asignados</p>
+  </div>
+</ion-content>

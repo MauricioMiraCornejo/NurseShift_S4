@@ -1,0 +1,56 @@
+<ion-content class="ion-padding">
+  <div class="logo-container">
+    <ion-icon name="medkit-outline" class="logo-icon"></ion-icon>
+    <h1 class="app-title">NurseShift</h1>
+    <p class="app-subtitle">Gestión de turnos para enfermeras</p>
+  </div>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Iniciar Sesión</ion-card-title>
+      <ion-card-subtitle>Ingresa tus credenciales</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      
+      <ion-item>
+        <ion-label position="floating">Correo electrónico</ion-label>
+        <ion-input 
+          type="email" 
+          [(ngModel)]="email" 
+          (ionInput)="validarEmail()">
+        </ion-input>
+      </ion-item>
+      <ion-label *ngIf="errorEmail" color="danger" class="error-message">
+        {{ errorEmail }}
+      </ion-label>
+
+      
+      <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input 
+          type="password" 
+          [(ngModel)]="password" 
+          (ionInput)="validarPassword()">
+        </ion-input>
+      </ion-item>
+      <ion-label *ngIf="errorPassword" color="danger" class="error-message">
+        {{ errorPassword }}
+      </ion-label>
+
+      
+      <ion-label *ngIf="errorGeneral" color="danger" class="error-message general-error">
+        {{ errorGeneral }}
+      </ion-label>
+
+      
+      <ion-button expand="block" (click)="login()" class="login-btn">
+        Ingresar
+      </ion-button>
+
+      <div class="register-link">
+        <p>¿No tienes cuenta? <a routerLink="/registro">Regístrate aquí</a></p>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,64 @@
+.logo-container {
+  text-align: center;
+  margin-bottom: 30px;
+  margin-top: 50px;
+}
+
+.logo-icon {
+  font-size: 80px;
+  color: var(--ion-color-primary);
+}
+
+.app-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 10px 0 5px;
+}
+
+.app-subtitle {
+  font-size: 14px;
+  color: var(--ion-color-medium);
+}
+
+.login-btn {
+  margin-top: 20px;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.register-link a {
+  text-decoration: none;
+  color: var(--ion-color-primary);
+}
+
+
+.error-message {
+  font-size: 12px;
+  margin-left: 16px;
+  margin-top: 4px;
+  display: block;
+}
+
+.general-error {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  display: block;
+}
+
+.error-input {
+  --border-color: var(--ion-color-danger);
+  --highlight-color: var(--ion-color-danger);
+}
+
+
+.error-message {
+  font-size: 12px;
+  margin-left: 16px;
+  margin-top: 4px;
+  display: block;
+}

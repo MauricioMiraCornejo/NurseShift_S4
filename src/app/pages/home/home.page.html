@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>NurseShift</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/perfil">
+        <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  
+  <ion-segment [(ngModel)]="segmentoActual" (ionChange)="cambiarSegmento($event)">
+    <ion-segment-button value="mis-datos">
+      <ion-label>Mis Datos</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="experiencia">
+      <ion-label>Experiencia</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="certificaciones">
+      <ion-label>Certificaciones</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  
+  <div *ngIf="segmentoActual === 'mis-datos'" class="component-wrapper">
+    <app-mis-datos></app-mis-datos>
+  </div>
+
+  <div *ngIf="segmentoActual === 'experiencia'" class="component-wrapper">
+    <app-experiencia-laboral></app-experiencia-laboral>
+  </div>
+
+  <div *ngIf="segmentoActual === 'certificaciones'" class="component-wrapper">
+    <app-certificaciones></app-certificaciones>
+  </div>
+</ion-content>

@@ -1,0 +1,21 @@
+.turno-item {
+  margin-bottom: 10px;
+  border-radius: 10px;
+  --padding-start: 10px;
+  --inner-padding-end: 10px;
+}
+
+.avatar-icon {
+  font-size: 32px;
+  color: var(--ion-color-primary);
+}
+
+.empty-state {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.empty-icon {
+  font-size: 80px;
+  color: var(--ion-color-medium);
+}
