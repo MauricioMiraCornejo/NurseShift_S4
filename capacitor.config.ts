@@ -1,9 +1,33 @@
-import type { CapacitorConfig } from '@capacitor/cli';
+import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
-  appName: 'NurseShift',
-  webDir: 'www'
+  appName: 'Nurse Shift',
+  webDir: 'www',
+  android: {
+    buildOptions: {
+      keystorePath: '',
+      keystorePassword: '',
+      keystoreAlias: '',
+      keystoreAliasPassword: '',
+      releaseType: 'APK',
+      signingType: 'apksigner'
+    }
+  },
+  server: {
+    androidScheme: 'https'
+  },
+ 
+  plugins: {
+    Camera: {
+      
+      allowEditing: true
+    },
+    Geolocation: {
+      
+      enableHighAccuracy: true
+    }
+  }
 };
 
 export default config;

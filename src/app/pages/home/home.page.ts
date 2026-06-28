@@ -7,7 +7,6 @@ import { Component, OnInit } from '@angular/core';
   standalone: false,
 })
 export class HomePage implements OnInit {
- 
   nombreEnfermera: string = 'Josefina Mira';
   turnoHoy: any = {
     fecha: 'Lunes 08 de Junio',
@@ -15,15 +14,14 @@ export class HomePage implements OnInit {
     tipo: 'Turno Mañana',
     estado: 'Activo'
   };
-
   
   segmentoActual: string = 'mis-datos';
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
-  
+
   cambiarSegmento(event: any) {
     this.segmentoActual = event.detail.value;
     console.log('Segmento cambiado a:', this.segmentoActual);

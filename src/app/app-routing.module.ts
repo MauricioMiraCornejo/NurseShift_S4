@@ -19,19 +19,36 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule),
-    canActivate: [AuthGuard]  
+    canActivate: [AuthGuard]
   },
   {
     path: 'mis-turnos',
     loadChildren: () => import('./pages/mis-turnos/mis-turnos.module').then(m => m.MisTurnosPageModule),
-    canActivate: [AuthGuard]  
+    canActivate: [AuthGuard]
   },
   {
     path: 'perfil',
     loadChildren: () => import('./pages/perfil/perfil.module').then(m => m.PerfilPageModule),
-    canActivate: [AuthGuard]  
+    canActivate: [AuthGuard]
   },
   
+  {
+    path: 'posts',
+    loadChildren: () => import('./pages/posts/posts.module').then(m => m.PostsPageModule),
+    canActivate: [AuthGuard]
+  },
+  
+  {
+    path: 'mapa',
+    loadChildren: () => import('./pages/mapa/mapa.module').then(m => m.MapaPageModule),
+    canActivate: [AuthGuard]
+  },
+  
+  {
+    path: 'camara',
+    loadChildren: () => import('./pages/camara/camara.module').then(m => m.CamaraPageModule),
+    canActivate: [AuthGuard]
+  },
   {
     path: '**',
     loadChildren: () => import('./pages/page-not-found/page-not-found.module').then(m => m.PageNotFoundPageModule)
@@ -44,4 +61,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

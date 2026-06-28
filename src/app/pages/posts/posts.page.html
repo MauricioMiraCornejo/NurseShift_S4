@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Posts API Connection</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cambiarApi()">
+        <ion-icon slot="icon-only" [name]="useLocalApi ? 'server' : 'cloud'"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  
+  <ion-chip [color]="useLocalApi ? 'primary' : 'tertiary'">
+    <ion-icon [name]="useLocalApi ? 'server' : 'cloud'"></ion-icon>
+    <ion-label>{{ useLocalApi ? 'json-server (local)' : 'JSONPlaceholder (externa)' }}</ion-label>
+  </ion-chip>
+
+  
+  <ion-button expand="block" (click)="cargarPosts()" color="medium" [disabled]="loading">
+    <ion-icon name="refresh-outline" slot="start"></ion-icon>
+    {{ loading ? 'Cargando...' : 'Recargar Posts' }}
+  </ion-button>
+
+  
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ isEditing ? 'Editar Post' : 'Nuevo Post' }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Título</ion-label>
+        <ion-input [(ngModel)]="newPost.title" type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Contenido</ion-label>
+        <ion-textarea [(ngModel)]="newPost.body" rows="4"></ion-textarea>
+      </ion-item>
+      <ion-item *ngIf="!isEditing">
+        <ion-label position="floating">User ID</ion-label>
+        <ion-input [(ngModel)]="newPost.userId" type="number"></ion-input>
+      </ion-item>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <ion-button expand="block" color="success" (click)="isEditing ? actualizarPost() : crearPost()" [disabled]="loading">
+              <ion-icon [name]="isEditing ? 'create-outline' : 'add-outline'" slot="start"></ion-icon>
+              {{ isEditing ? 'Actualizar' : 'Crear' }}
+            </ion-button>
+          </ion-col>
+          <ion-col size="6" *ngIf="isEditing">
+            <ion-button expand="block" color="medium" (click)="limpiarFormulario()">
+              Cancelar
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Posts ({{ posts.length }})</ion-label>
+    </ion-list-header>
+    
+    <ion-item *ngIf="loading && posts.length === 0">
+      <ion-skeleton-text animated style="width: 100%; height: 60px;"></ion-skeleton-text>
+    </ion-item>
+    
+    <ion-item *ngFor="let post of posts; let i = index" class="post-item">
+      <ion-label>
+        <h2><strong>{{ post.title }}</strong></h2>
+        <p class="post-body">{{ post.body | slice:0:100 }}{{ post.body.length > 100 ? '...' : '' }}</p>
+        <p class="post-meta">User ID: {{ post.userId }} | ID: {{ post.id }}</p>
+      </ion-label>
+      <ion-buttons slot="end">
+        <ion-button color="primary" (click)="editarPost(post)">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button color="danger" (click)="eliminarPost(post.id)">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+    
+    <ion-item *ngIf="!loading && posts.length === 0" class="empty-state">
+      <ion-label class="ion-text-center">
+        <ion-icon name="document-outline" size="large"></ion-icon>
+        <p>No hay posts disponibles</p>
+        <p class="ion-text-small">Presiona "Recargar Posts" para cargar datos</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -10,7 +10,24 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+
+  <ion-button expand="block" routerLink="/posts" color="tertiary" class="api-button">
+    <ion-icon name="server-outline" slot="start"></ion-icon>
+    API Connection - Posts
+  </ion-button>
+
   
+  <ion-button expand="block" routerLink="/mapa" color="success" class="api-button">
+    <ion-icon name="map-outline" slot="start"></ion-icon>
+    Mapa en Tiempo Real
+  </ion-button>
+
+  
+  <ion-button expand="block" routerLink="/camara" color="warning" class="api-button">
+    <ion-icon name="camera-outline" slot="start"></ion-icon>
+    Tomar Foto
+  </ion-button>
+
   <ion-segment [(ngModel)]="segmentoActual" (ionChange)="cambiarSegmento($event)">
     <ion-segment-button value="mis-datos">
       <ion-label>Mis Datos</ion-label>
@@ -23,7 +40,6 @@
     </ion-segment-button>
   </ion-segment>
 
-  
   <div *ngIf="segmentoActual === 'mis-datos'" class="component-wrapper">
     <app-mis-datos></app-mis-datos>
   </div>

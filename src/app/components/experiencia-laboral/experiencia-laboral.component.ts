@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { DbtaskService } from '../../services/dbtask.service';
 
 export interface Experiencia {
+  id?: number;
   empresa: string;
   anoInicio: number;
   trabajandoActual: boolean;
@@ -24,51 +26,76 @@ export class ExperienciaLaboralComponent implements OnInit {
   };
   mostrarFormulario: boolean = false;
   anios: number[] = [];
+  usuarioActual: string = '';
 
-  constructor() {
-    // Genera años desde 1980 hasta el próximo año
+  constructor(private dbtaskService: DbtaskService) {
     const yearActual = new Date().getFullYear();
     for (let i = yearActual + 1; i >= 1980; i--) {
       this.anios.push(i);
     }
   }
 
-  ngOnInit() {
-    this.cargarExperiencias();
+  async ngOnInit() {
+    await this.cargarUsuarioActual();
+    await this.cargarExperiencias();
   }
 
-  cargarExperiencias() {
-    const saved = localStorage.getItem('experiencias_laborales');
-    if (saved) {
-      this.experiencias = JSON.parse(saved);
+  async cargarUsuarioActual() {
+    const sesion = await this.dbtaskService.obtenerSesionActiva();
+    if (sesion) {
+      this.usuarioActual = sesion.user_name;
     }
   }
 
-  guardarExperiencias() {
-    localStorage.setItem('experiencias_laborales', JSON.stringify(this.experiencias));
+  async cargarExperiencias() {
+    if (!this.usuarioActual) {
+      await this.cargarUsuarioActual();
+    }
+    
+    if (this.usuarioActual) {
+      this.experiencias = await this.dbtaskService.obtenerExperienciasLaborales(this.usuarioActual);
+    }
   }
 
-  agregarExperiencia() {
+  async agregarExperiencia() {
     if (this.nuevaExperiencia.empresa && this.nuevaExperiencia.cargo && this.nuevaExperiencia.anoInicio) {
-      const experienciaCopy = { ...this.nuevaExperiencia };
-      if (experienciaCopy.trabajandoActual) {
-        delete experienciaCopy.anoTermino;
+      
+      if (this.nuevaExperiencia.trabajandoActual) {
+        delete this.nuevaExperiencia.anoTermino;
       }
-      this.experiencias.push(experienciaCopy);
-      this.guardarExperiencias();
-      this.nuevaExperiencia = {
-        empresa: '',
-        anoInicio: new Date().getFullYear(),
-        trabajandoActual: false,
-        cargo: ''
-      };
-      this.mostrarFormulario = false;
+
+      const success = await this.dbtaskService.guardarExperienciaLaboral(
+        this.nuevaExperiencia,
+        this.usuarioActual
+      );
+
+      if (success) {
+        await this.cargarExperiencias();
+        this.nuevaExperiencia = {
+          empresa: '',
+          anoInicio: new Date().getFullYear(),
+          trabajandoActual: false,
+          cargo: ''
+        };
+        this.mostrarFormulario = false;
+        await this.dbtaskService.presentToast('Experiencia agregada correctamente');
+      } else {
+        await this.dbtaskService.presentToast('Error al agregar experiencia');
+      }
+    } else {
+      await this.dbtaskService.presentToast('Complete todos los campos');
     }
   }
 
-  eliminarExperiencia(index: number) {
-    this.experiencias.splice(index, 1);
-    this.guardarExperiencias();
+  async eliminarExperiencia(index: number) {
+    const experiencia = this.experiencias[index];
+    if (experiencia.id) {
+      const success = await this.dbtaskService.eliminarExperienciaLaboral(experiencia.id);
+      if (success) {
+        await this.cargarExperiencias();
+        await this.dbtaskService.presentToast('Experiencia eliminada');
+      }
+    }
   }
 
   toggleFormulario() {

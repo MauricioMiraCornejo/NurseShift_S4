@@ -53,6 +53,7 @@ export class LoginPage implements OnInit {
   }
 
   async login() {
+    console.log('LOGIN - Iniciando login con:', this.email);
     this.errorGeneral = '';
 
     const emailValido = this.validarEmail();
@@ -60,20 +61,27 @@ export class LoginPage implements OnInit {
 
     if (!emailValido || !passwordValido) {
       this.errorGeneral = 'Por favor, corrija los errores antes de continuar';
+      console.log('LOGIN - Errores de validación');
       return;
     }
 
+    console.log('LOGIN - Validando credenciales...');
     const credencialesValidas = await this.dbtaskService.validarCredenciales(this.email, this.password);
+    console.log('LOGIN - Credenciales válidas:', credencialesValidas);
     
     if (!credencialesValidas) {
       this.errorGeneral = 'Usuario o contraseña incorrectos';
+      console.log('LOGIN - Credenciales inválidas');
       return;
     }
     
+    console.log('LOGIN - Activando sesión...');
     const sesionActivada = await this.dbtaskService.activarSesion(this.email);
+    console.log('LOGIN - Sesión activada:', sesionActivada);
     
     if (!sesionActivada) {
       this.errorGeneral = 'Error al iniciar sesión. Intente nuevamente.';
+      console.log('LOGIN - Error al activar sesión');
       return;
     }
     
@@ -82,7 +90,7 @@ export class LoginPage implements OnInit {
       timestamp: new Date().toISOString()
     });
 
-    console.log('Login exitoso:', this.email);
+    console.log('✅ LOGIN - Login exitoso:', this.email);
     this.navCtrl.navigateForward('/home');
   }
 }

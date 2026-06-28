@@ -1,3 +1,4 @@
+/* src/app/pages/home/home.page.scss */
 .welcome-text {
   color: var(--ion-color-medium);
   margin-bottom: 20px;
@@ -33,7 +34,6 @@
   color: var(--ion-color-medium);
 }
 
-
 ion-segment {
   margin-bottom: 20px;
   --background: var(--ion-color-light);
@@ -44,21 +44,25 @@ ion-segment-button {
   --indicator-color: var(--ion-color-primary);
 }
 
-
 .component-wrapper {
   width: 100%;
   min-height: 300px;
 }
-
 
 .component-wrapper > * {
   width: 100%;
   display: block;
 }
 
-
 :host ::ng-deep .experiencia-container,
 :host ::ng-deep .certificaciones-container,
 :host ::ng-deep .mis-datos-container {
   padding: 0;
+}
+
+
+.api-button {
+  margin-bottom: 20px;
+  border-radius: 12px;
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

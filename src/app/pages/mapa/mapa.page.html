@@ -1,0 +1,97 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/home"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Ubicación en Tiempo Real</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    
+    <div *ngIf="loading" class="loading-container">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Obteniendo ubicación...</p>
+    </div>
+
+    
+    <div *ngIf="errorMessage && !loading" class="error-container">
+        <ion-icon name="warning-outline" size="large"></ion-icon>
+        <h3>Error de ubicación</h3>
+        <p>{{ errorMessage }}</p>
+        <ion-button (click)="actualizarUbicacion()">
+            <ion-icon name="refresh-outline" slot="start"></ion-icon>
+            Reintentar
+        </ion-button>
+    </div>
+
+    
+    <div *ngIf="!loading && !errorMessage">
+        
+        <div #map id="map" class="map-container"></div>
+
+        
+        <ion-card class="info-card">
+            <ion-card-header>
+                <ion-card-title>
+                    <ion-icon name="location-outline" color="primary"></ion-icon>
+                    Ubicación en Tiempo Real
+                </ion-card-title>
+                <ion-card-subtitle>Actualización automática</ion-card-subtitle>
+            </ion-card-header>
+
+            <ion-card-content>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="6">
+                            <div class="info-item">
+                                <ion-label>Latitud</ion-label>
+                                <p class="info-value">{{ latitude.toFixed(6) }}°</p>
+                            </div>
+                        </ion-col>
+                        <ion-col size="6">
+                            <div class="info-item">
+                                <ion-label>Longitud</ion-label>
+                                <p class="info-value">{{ longitude.toFixed(6) }}°</p>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col size="12">
+                            <div class="info-item">
+                                <ion-label>Última actualización</ion-label>
+                                <p class="info-value">{{ getTimestamp() }}</p>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col size="12">
+                            <div class="info-item">
+                                <ion-label>Estado</ion-label>
+                                <ion-chip color="success">
+                                    <ion-icon name="radio-button-on"></ion-icon>
+                                    <ion-label>Activo</ion-label>
+                                </ion-chip>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+
+                <ion-button expand="block" (click)="actualizarUbicacion()" color="primary">
+                    <ion-icon name="refresh-outline" slot="start"></ion-icon>
+                    Actualizar Ubicación
+                </ion-button>
+            </ion-card-content>
+        </ion-card>
+        
+        <ion-card class="note-card">
+            <ion-card-content>
+                <ion-icon name="information-circle-outline" color="medium"></ion-icon>
+                <span class="note-text">
+                    La ubicación se actualiza automáticamente mientras estás en esta página.
+                    Al salir, se detiene el seguimiento para ahorrar batería.
+                </span>
+            </ion-card-content>
+        </ion-card>
+    </div>
+</ion-content>

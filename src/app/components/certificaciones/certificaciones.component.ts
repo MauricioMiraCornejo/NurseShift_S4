@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { DbtaskService } from '../../services/dbtask.service';
 
 export interface Certificacion {
+  id?: number;
   nombre: string;
   fechaObtencion: string;
   tieneVencimiento: boolean;
@@ -21,87 +23,80 @@ export class CertificacionesComponent implements OnInit {
     tieneVencimiento: false
   };
   mostrarFormulario: boolean = false;
+  usuarioActual: string = '';
 
-  constructor() { }
+  constructor(private dbtaskService: DbtaskService) { }
 
-  ngOnInit() {
-    this.cargarCertificaciones();
+  async ngOnInit() {
+    await this.cargarUsuarioActual();
+    await this.cargarCertificaciones();
   }
 
-  cargarCertificaciones() {
-    const saved = localStorage.getItem('certificaciones');
-    if (saved) {
-      try {
-        this.certificaciones = JSON.parse(saved);
-      } catch (e) {
-        console.error('Error al cargar certificaciones:', e);
-        this.certificaciones = [];
-      }
+  async cargarUsuarioActual() {
+    const sesion = await this.dbtaskService.obtenerSesionActiva();
+    if (sesion) {
+      this.usuarioActual = sesion.user_name;
     }
   }
 
-  guardarCertificaciones() {
-    try {
-      localStorage.setItem('certificaciones', JSON.stringify(this.certificaciones));
-      console.log('Certificaciones guardadas:', this.certificaciones);
-    } catch (e) {
-      console.error('Error al guardar certificaciones:', e);
+  async cargarCertificaciones() {
+    if (!this.usuarioActual) {
+      await this.cargarUsuarioActual();
+    }
+    
+    if (this.usuarioActual) {
+      this.certificaciones = await this.dbtaskService.obtenerCertificaciones(this.usuarioActual);
     }
   }
 
-  agregarCertificacion() {
-    console.log('Intentando agregar certificación...');
-    console.log('Datos:', this.nuevaCertificacion);
-
+  async agregarCertificacion() {
     if (!this.nuevaCertificacion.nombre || this.nuevaCertificacion.nombre.trim() === '') {
-      console.warn('El nombre es obligatorio');
-      alert('Por favor, ingresa el nombre de la certificación');
+      await this.dbtaskService.presentToast('⚠️ Ingrese el nombre de la certificación');
       return;
     }
 
     if (!this.nuevaCertificacion.fechaObtencion) {
-      console.warn('La fecha de obtención es obligatoria');
-      alert('Por favor, selecciona la fecha de obtención');
+      await this.dbtaskService.presentToast('⚠️ Seleccione la fecha de obtención');
       return;
     }
 
     if (this.nuevaCertificacion.tieneVencimiento && !this.nuevaCertificacion.fechaVencimiento) {
-      console.warn('La fecha de vencimiento es obligatoria');
-      alert('Por favor, selecciona la fecha de vencimiento');
+      await this.dbtaskService.presentToast('⚠️ Seleccione la fecha de vencimiento');
       return;
     }
 
-    const certificacionCopy = { ...this.nuevaCertificacion };
-    
-    if (!certificacionCopy.tieneVencimiento) {
-      delete certificacionCopy.fechaVencimiento;
+    const success = await this.dbtaskService.guardarCertificacion(
+      this.nuevaCertificacion,
+      this.usuarioActual
+    );
+
+    if (success) {
+      await this.cargarCertificaciones();
+      this.nuevaCertificacion = {
+        nombre: '',
+        fechaObtencion: new Date().toISOString(),
+        tieneVencimiento: false
+      };
+      this.mostrarFormulario = false;
+      await this.dbtaskService.presentToast('✅ Certificación agregada correctamente');
+    } else {
+      await this.dbtaskService.presentToast('❌ Error al agregar certificación');
     }
-
-    this.certificaciones.push(certificacionCopy);
-    this.guardarCertificaciones();
-
-    this.nuevaCertificacion = {
-      nombre: '',
-      fechaObtencion: new Date().toISOString(),
-      tieneVencimiento: false
-    };
-    this.mostrarFormulario = false;
-
-    console.log('✅ Certificación agregada exitosamente');
-    alert('✅ Certificación agregada correctamente');
   }
 
-  eliminarCertificacion(index: number) {
-    if (confirm('¿Estás seguro de eliminar esta certificación?')) {
-      this.certificaciones.splice(index, 1);
-      this.guardarCertificaciones();
-      console.log('Certificación eliminada');
+  async eliminarCertificacion(index: number) {
+    const certificacion = this.certificaciones[index];
+    if (certificacion.id) {
+      const success = await this.dbtaskService.eliminarCertificacion(certificacion.id);
+      if (success) {
+        await this.cargarCertificaciones();
+        await this.dbtaskService.presentToast('🗑️ Certificación eliminada');
+      }
     }
   }
 
   toggleFormulario() {
     this.mostrarFormulario = !this.mostrarFormulario;
-    console.log('Formulario visible:', this.mostrarFormulario);
   }
 
   formatearFecha(fecha: string): string {
@@ -122,17 +117,42 @@ export class CertificacionesComponent implements OnInit {
     }
   }
 
+  estaProximoAVencer(fechaVencimiento: string): boolean {
+    if (!fechaVencimiento) return false;
+    try {
+      const hoy = new Date();
+      const vencimiento = new Date(fechaVencimiento);
+      const diffTime = vencimiento.getTime() - hoy.getTime();
+      const diffDays = diffTime / (1000 * 60 * 60 * 24);
+      return diffDays > 0 && diffDays <= 30;
+    } catch (e) {
+      return false;
+    }
+  }
+
   getColorCertificado(cert: Certificacion): string {
     if (!cert.tieneVencimiento || !cert.fechaVencimiento) {
       return 'success';
     }
-    return this.estaVencido(cert.fechaVencimiento) ? 'danger' : 'warning';
+    if (this.estaVencido(cert.fechaVencimiento)) {
+      return 'danger';
+    }
+    if (this.estaProximoAVencer(cert.fechaVencimiento)) {
+      return 'warning';
+    }
+    return 'success';
   }
 
   getEstadoCertificado(cert: Certificacion): string {
     if (!cert.tieneVencimiento || !cert.fechaVencimiento) {
       return 'Vigente';
     }
-    return this.estaVencido(cert.fechaVencimiento) ? 'VENCIDO' : 'Vigente';
+    if (this.estaVencido(cert.fechaVencimiento)) {
+      return 'VENCIDO';
+    }
+    if (this.estaProximoAVencer(cert.fechaVencimiento)) {
+      return 'Próximo a vencer';
+    }
+    return 'Vigente';
   }
 }

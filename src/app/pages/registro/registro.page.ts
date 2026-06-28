@@ -1,4 +1,3 @@
-// NURSESHIFT/src/app/pages/registro/registro.page.ts (MODIFICADO)
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { DbtaskService } from '../../services/dbtask.service';
@@ -110,8 +109,7 @@ export class RegistroPage implements OnInit {
       this.errorGeneral = 'Error al registrar usuario. Intente nuevamente.';
       return;
     }
-
-    // Guardar sesión en Storage
+    
     await this.storageService.set('sesion_activa', {
       user_name: this.email,
       timestamp: new Date().toISOString()

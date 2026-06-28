@@ -1,0 +1,23 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "title": "Bienvenido a NurseShift",
+      "body": "Esta es una aplicación de gestión de turnos para enfermeras. Este post de prueba muestra el funcionamiento de json-server.",
+      "userId": 1
+    },
+    {
+      "id": "2",
+      "title": "API Connection - Semana 5",
+      "body": "Estamos aprendiendo a consumir APIs REST con Ionic y Angular. Esta es una prueba de conexión con json-server.",
+      "userId": 2
+    },
+    {
+      "id": "3",
+      "title": "CRUD con json-server",
+      "body": "Podemos crear, leer, actualizar y eliminar posts usando las operaciones GET, POST, PUT y DELETE.",
+      "userId": 1
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

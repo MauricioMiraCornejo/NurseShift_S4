@@ -4,7 +4,7 @@
     {{ mostrarFormulario ? 'Cancelar' : 'Agregar Experiencia' }}
   </ion-button>
 
-  <!-- Formulario para agregar experiencia -->
+  
   <ion-card *ngIf="mostrarFormulario" class="form-card">
     <ion-card-header>
       <ion-card-title>Nueva Experiencia Laboral</ion-card-title>
@@ -42,8 +42,7 @@
       <ion-button expand="block" (click)="agregarExperiencia()" class="save-btn">Guardar Experiencia</ion-button>
     </ion-card-content>
   </ion-card>
-
-  <!-- Listado de experiencias -->
+  
   <ion-list>
     <ion-list-header>
       <ion-label>Mis Experiencias Laborales</ion-label>
